@@ -1,3 +1,5 @@
+require 'world/map'
+
 class NotInitializedError < StandardError
 end
 
@@ -5,24 +7,6 @@ class WrongDirectionError < StandardError
 end
 
 class TileNotAvailable < StandardError
-end
-
-class Map
-  attr_reader :compass
-
-  def initialize(width, length)
-    @width = width
-    @length = length
-    @compass = [:north, :east, :south, :west]
-  end
-
-  def tile_available?(x, y, speed)
-    place_available?(x + speed.first, y + speed.last)
-  end
-
-  def place_available?(x, y)
-    (0 <= x && x <= @width) && (0 <= y && y <= @length)
-  end
 end
 
 class Robot
@@ -33,7 +17,7 @@ class Robot
     @position_y = nil
     @facing = nil
     @map = map_object
-    @speed = {
+    @vector = {
       north: [0, 1],
       south: [0, -1],
       west: [-1, 0],
@@ -72,7 +56,7 @@ class Robot
         command = data.first
       end
     end
-    if @facing || command == 'place'
+    if initialized?(command)
       send('command_' + command, *params)
     else
       fail NotInitializedError
@@ -80,7 +64,7 @@ class Robot
   end
 
   def command_move
-    step = @speed[@facing]
+    step = @vector[@facing]
     available = @map.tile_available?(@position_x, @position_y, step)
     fail TileNotAvailable unless available
     @position_x += step.first
@@ -106,12 +90,15 @@ class Robot
 
   def command_place(x, y, facing)
     facing = facing.to_sym
-    fail WrongDirectionError unless @speed.key?(facing)
+    fail WrongDirectionError unless @vector.key?(facing)
     fail TileNotAvailable unless @map.place_available?(x.to_i, y.to_i)
-    @initialized = true
     @position_x = x.to_i
     @position_y = y.to_i
     @facing = facing
+  end
+
+  def initialized?(command)
+    @facing || command == 'place'
   end
 end
 

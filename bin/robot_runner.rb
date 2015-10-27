@@ -1,4 +1,4 @@
-require_relative 'robot'
+require_relative '../lib/robot'
 
 QUIT_COMMAND = 'quit'
 

@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../robot'
+require_relative '../lib/robot'
 
 describe Robot do
   before(:all) do
