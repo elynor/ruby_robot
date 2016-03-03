@@ -23,4 +23,8 @@ describe Part do
   it 'should load proper default commands' do
     expect(@part.commands).to include('status')
   end
+
+  it 'should not duplicate commands' do
+    expect(@part.commands).to eq(@part.commands.uniq)
+  end
 end

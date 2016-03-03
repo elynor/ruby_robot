@@ -32,4 +32,8 @@ describe CommandInterface do
       expect(error).to be_a(CommandInputError)
     }
   end
+
+  it 'should accept command to check devices' do
+    expect(@interface.commands).to include 'parts_list'
+  end
 end
