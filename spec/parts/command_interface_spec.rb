@@ -34,6 +34,6 @@ describe CommandInterface do
   end
 
   it 'should accept command to check devices' do
-    expect(@interface.commands).to include 'parts_list'
+    expect(@interface.actions).to include 'parts_list'
   end
 end

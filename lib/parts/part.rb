@@ -2,21 +2,21 @@ require 'yaml'
 
 class Part
 
-  attr_reader :name, :config, :commands
+  attr_reader :name, :config, :actions
 
   def initialize
-    @commands = initialize_basic_commands
+    @actions = initialize_basic_actions
     @name = underscore(self.class.name)
     @config = load_config_file @name
-    @commands = @commands | @config['commands']
+    @actions = @actions | @config['actions']
   end
 
   protected
 
-  def initialize_basic_commands
+  def initialize_basic_actions
     part_name = 'part'
     config = load_config_file part_name
-    config['commands']
+    config['actions']
   end
 
   def load_config_file(part_name)

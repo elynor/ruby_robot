@@ -15,16 +15,38 @@ describe Part do
     expect(@part.config).not_to be_empty
   end
 
-  it 'should load commands in array' do
-    expect(@part.commands).not_to be_empty
-    expect(@part.commands).to be_instance_of(Array)
+  it 'should load actions in array' do
+    expect(@part.actions).not_to be_empty
+    expect(@part.actions).to be_instance_of(Array)
   end
 
-  it 'should load proper default commands' do
-    expect(@part.commands).to include('status')
+  it 'should load proper default actions' do
+    expect(@part.actions).to include('status')
   end
 
-  it 'should not duplicate commands' do
-    expect(@part.commands).to eq(@part.commands.uniq)
+  it 'should not duplicate actions' do
+    expect(@part.actions).to eq(@part.actions.uniq)
+  end
+
+  it 'should raise an error if action is not in list' do
+    action = 'unknown action'
+
+    expect { @part.perform(action) }.to raise_error { |error|
+      expect(error).to be_a(PartActionError)
+    }
+  end
+
+  it 'should raise an error if action is empty' do
+    action = '   '
+
+    expect { @part.perform(action) }.to raise_error { |error|
+      expect(error).to be_a(PartActionError)
+    }
+  end
+
+  it 'should give status report on status action' do
+    action = 'status'
+
+    expect(@part.execute(action)).to eq('OK')
   end
 end

@@ -16,6 +16,6 @@ class CommandInterface < Part
   def validate_command
     fail CommandInputError, 'Command Nil' if @command.nil?
     fail CommandInputError, 'Command Empty' if @command.empty?
-    fail CommandInputError, 'Command Not Exist' unless @commands.include? @command
+    fail CommandInputError, 'Command Not Exist' unless @actions.include? @command
   end
 end
