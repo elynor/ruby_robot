@@ -1,4 +1,4 @@
-require 'world/map'
+require_relative 'world/map'
 
 class NotInitializedError < StandardError
 end
